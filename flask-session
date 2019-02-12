@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+usage = """session
+
+Usage:
+    session decode <hash>
+    session [--file] [--cookie [--name] [--header]] [--js] encode <secret> <json>
+
+Options:
+  -c --cookie   Output session in cookie format
+  -f --file     Treat <json> as a filename and read from it
+  -H --header   Include header setting
+  -h --help     Show this screen.
+  -j --js       Output session as JavaScript snippet
+  -n --name     Set cookie name
+"""
+
+import json
+from sys import exit
+
+from docopt import docopt
+
+from flask_sec import decode, encode, parse_json
+
+if __name__ == '__main__':
+    arguments = docopt(usage, options_first=True)
+
+    if arguments['encode']:
+        success, data = parse_json(arguments['<json>'], arguments['--file'])
+
+        if not success:
+            print(data)
+            exit(1)
+
+        res = encode(secret=arguments['<secret>'],
+                     session_data=data,
+                     as_cookie=arguments['--cookie'],
+                     cookie_name=arguments['--name'],
+                     header=arguments['--header'],
+                     as_js=arguments['--js'])
+        print(res)
+    else:
+        res = decode(arguments['<hash>'])
+        print(json.dumps(res, ensure_ascii=False, indent=4))

@@ -1,0 +1,70 @@
+from flask import Blueprint
+from flask_kit import Router, make_error
+
+from .session import encode, decode
+
+VERSION = '0.1'
+
+
+def create_api():
+    blueprint = Blueprint('flask-sec-api', __name__)
+    router = Router(blueprint)
+
+    @router.get('/version')
+    def get_version():
+        """ Return API's version """
+        return VERSION
+
+    @router.post('/decode', validate=decode_schema)
+    def decode_view(data):
+        """ Decode a flask session cookie """
+        res = decode(data.get('data', ''))
+        if not res:
+            return make_error('error.failDecode')
+        return res
+
+    @router.post('/encode', validate=encode_schema)
+    def decode_view(data):
+        """ Encode a flask session cookie """
+        res = encode(
+            session_data=data.get('data'),
+            secret=data.get('secret'),
+            as_cookie=data.get('secret'),
+            cookie_name=data.get('secret'),
+            header=data.get('secret'),
+            as_js=data.get('secret'),
+        )
+        if not res:
+            return make_error('error.failEncode')
+        return res
+
+
+decode_schema = {
+    'session': {
+        'type': 'string',
+        'required': True,
+    },
+}
+
+encode_schema = {
+    'data': {
+        'type': 'dict',
+        'required': True,
+    },
+    'secret': {
+        'type': 'string',
+        'required': True,
+    },
+    'as_cookie': {
+        'type': 'boolean',
+        'default': False,
+    },
+    'as_header': {
+        'type': 'boolean',
+        'default': False,
+    },
+    'as_js': {
+        'type': 'boolean',
+        'default': False,
+    },
+}
