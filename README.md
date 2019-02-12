@@ -62,5 +62,5 @@ flask-session --js encode mykey '{"role": "admin"}'
 
 ## Service
 
-This is also [provided as a service here](https://flask-session.rui.calsaverini.com) trough a
+This is also [provided as a service here](https://flask-session.calsaverini.com) trough a
 REST API.
