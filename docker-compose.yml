@@ -1,0 +1,9 @@
+version: '3.6'
+
+services:
+  flask_session_api:
+    image: registry.gitlab.com/rgcalsaverini/flask-session:latest
+    volumes:
+      - ${APPS_HOME:-/apps}/ssl/:/ssl/
+    ports:
+      - 5001:443

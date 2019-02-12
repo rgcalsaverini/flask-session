@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+import json
+from sys import exit
+
+from docopt import docopt
+
+from flask_sec import decode, encode, parse_json
 
 usage = """session
 
@@ -14,13 +20,6 @@ Options:
   -j --js       Output session as JavaScript snippet
   -n --name     Set cookie name
 """
-
-import json
-from sys import exit
-
-from docopt import docopt
-
-from flask_sec import decode, encode, parse_json
 
 if __name__ == '__main__':
     arguments = docopt(usage, options_first=True)

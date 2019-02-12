@@ -3,17 +3,10 @@ from flask_kit import Router, make_error
 
 from .session import encode, decode
 
-VERSION = '0.1'
-
 
 def create_api():
-    blueprint = Blueprint('flask-sec-api', __name__)
+    blueprint = Blueprint('flask_session_api', __name__)
     router = Router(blueprint)
-
-    @router.get('/version')
-    def get_version():
-        """ Return API's version """
-        return VERSION
 
     @router.post('/decode', validate=decode_schema)
     def decode_view(data):
@@ -24,7 +17,7 @@ def create_api():
         return res
 
     @router.post('/encode', validate=encode_schema)
-    def decode_view(data):
+    def encode_view(data):
         """ Encode a flask session cookie """
         res = encode(
             session_data=data.get('data'),
@@ -37,6 +30,8 @@ def create_api():
         if not res:
             return make_error('error.failEncode')
         return res
+
+    return blueprint
 
 
 decode_schema = {

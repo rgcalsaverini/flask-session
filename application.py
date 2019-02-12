@@ -1,6 +1,6 @@
 from flask_kit import create_app
 
-from flask_sec import create_api
+from flask_sec.api import create_api
 
 app = create_app(https=False, blueprints=[
     create_api()

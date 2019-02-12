@@ -6,7 +6,7 @@ RUN mkdir -p ${APP_DIR}
 
 RUN apk add --no-cache python3 uwsgi uwsgi-python3 iputils
 
-COPY frontend_server/requirements.txt ${APP_DIR}/
+COPY server-requirements.txt ${APP_DIR}/
 
 RUN apk add --no-cache --virtual build-dependencies \
        gcc \
@@ -22,7 +22,7 @@ RUN apk add --no-cache --virtual build-dependencies \
        && apk del build-dependencies \
        && rm -rf /var/lib/apt/lists/*
 
-COPY deploy/frontend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY deploy/frontend/uwsgi.ini frontend_server/application.py ${APP_DIR}/
-COPY frontend_server/app_server ${APP_DIR}/app_server
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY deploy/uwsgi.ini application.py ${APP_DIR}/
+COPY flask_sec ${APP_DIR}/app_server
 CMD nginx && uwsgi --ini ${APP_DIR}/uwsgi.ini --lazy-apps
