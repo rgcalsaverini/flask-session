@@ -6,4 +6,4 @@ services:
     volumes:
       - ${APPS_HOME:-/apps}/ssl/:/ssl/
     ports:
-      - 5001:443
+      - 5001:80
