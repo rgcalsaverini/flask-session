@@ -24,5 +24,5 @@ RUN apk add --no-cache --virtual build-dependencies \
 
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
 COPY deploy/uwsgi.ini application.py ${APP_DIR}/
-COPY flask_sec ${APP_DIR}/app_server
+COPY flask_sec ${APP_DIR}/flask_sec
 CMD nginx && uwsgi --ini ${APP_DIR}/uwsgi.ini --lazy-apps
